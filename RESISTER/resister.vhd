@@ -29,23 +29,32 @@ begin
     ADDRESS <= reg_d;
 
     process (CLK, RST) begin
+
         if (RST = '1') then
             reg_a <= (others => '0');
             reg_b <= (others => '0');
             reg_c <= (others => '0');
             reg_d <= (others => '0');
+
         elsif (pos_edge(CLK)) then
             reg_d <= reg_d + 1;
+
             if (LOAD(0) = '0') then
                 reg_a <= IN_DATA;
+
             elsif (LOAD(1) = '0') then
                 reg_b <= IN_DATA;
+
             elsif (LOAD(2) = '0') then
                 reg_c <= IN_DATA;
+
             elsif (LOAD(3) = '0') then
                 reg_d <= IN_DATA;
+                
             end if;
+
         end if;
+
     end process;
 end RTL;
 
