@@ -68,9 +68,18 @@ module register_tb;
             #(`cycle);
             LOAD <= "1101";
             #(`cycle);
+            RST <= "1";
 
-            RST <= '1';
-            
+            #(`cycle);
+            RST <= "0";
 
+            IN_DATA <= "1100";
+            #(`cycle);
+            LOAD <= "1011";
+            #(`cycle);
+            LOAD <= "0111";
 
-    )
+            #`max_cycle_count;
+            $stop;
+        end
+endmodule
