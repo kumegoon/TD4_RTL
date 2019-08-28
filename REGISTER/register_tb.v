@@ -10,7 +10,7 @@ module register_tb;
 
 // wire and reg set
 
-    reg             CLK;
+    reg             I_CLK;
     reg             RST;
     reg [3:0]       LOAD;
     reg [3:0]       IN_DATA;
@@ -21,14 +21,14 @@ module register_tb;
 
 // Design set
 
-    register register(
-        .CLK(CLK),
+    register_4bit register_4bit(
+        .CLK(I_CLK),
         .RST(RST),
         .LOAD(LOAD),
         .IN_DATA(IN_DATA),
         .OUT_A(OUT_A),
         .OUT_B(OUT_B),
-        .OUT_C(OUT_C),
+        .OUT_LD(OUT_LD),
         .ADDRESS(ADDRESS)
         );        
 
@@ -45,8 +45,16 @@ module register_tb;
 
     always
         begin
-            #(`cycle);
+            #(`cycle)
             -> cycle_event;
+        end
+
+    always
+        begin
+            #(`cycle/2);    
+            I_CLK = 0;
+            #(`cycle/2);
+            I_CLK = 1;
         end
 
     always @( cycle_event )
@@ -62,22 +70,27 @@ module register_tb;
     initial
         begin
             #(`cycle);
-            IN_DATA <= "1010";
+            RST = 1'b1;
             #(`cycle);
-            LOAD <= "1110";
-            #(`cycle);
-            LOAD <= "1101";
-            #(`cycle);
-            RST <= "1";
+            RST = 1'b0;
 
             #(`cycle);
-            RST <= "0";
+            IN_DATA = 4'b1010;
+            #(`cycle);
+            LOAD = 4'b1110;
+            #(`cycle);
+            LOAD = 4'b1101;
 
-            IN_DATA <= "1100";
             #(`cycle);
-            LOAD <= "1011";
+            RST <= 1'b1;
             #(`cycle);
-            LOAD <= "0111";
+            RST <= 1'b0;
+
+            IN_DATA <= 4'b1100;
+            #(`cycle);
+            LOAD <= 4'b1011;
+            #(`cycle);
+            LOAD <= 4'b0111;
 
             #`max_cycle_count;
             $stop;
