@@ -11,7 +11,7 @@ entity data_selector is
         SEL_B   : in STD_LOGIC;
         OUT_Y   : out STD_LOGIC_VECTOR(3 downto 0)
     );
-end data_selector
+end data_selector;
 
 architecture RTL of data_selector is
 
@@ -25,5 +25,6 @@ begin
             OUT_Y <= IN_SW;
         else
             OUT_Y <= "0000";
+        end if;
     end process;
 end RTL;

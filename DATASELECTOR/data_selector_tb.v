@@ -8,13 +8,12 @@
 module data_selector_tb;
 
 // wire and reg set
-
     reg [3:0]       IN_A;
     reg [3:0]       IN_B;
     reg [3:0]       IN_SW;
     reg             SEL_A;
     reg             SEL_B;
-    wire [3:0]      OUT_Y
+    wire [3:0]      OUT_Y;
 
 // Design set
 
@@ -25,7 +24,7 @@ module data_selector_tb;
         .SEL_A(SEL_A),
         .SEL_B(SEL_B),
         .OUT_Y(OUT_Y)
-    );
+        );
 
 // cycle set
 
@@ -50,16 +49,32 @@ module data_selector_tb;
             cycle_count <= cycle_count + 1;
                 if ( cycle_count % 1000 == 0) begin
                     $display ( "%d cycle" , cycle_count );
+                end
         end
 
-    always
-        begin
-            #(`cycle/2);
-            I_CLK = 0;
-            #(`cycle/2);
-            I_CLK = 1;
-        end
-    
 // test
 
+    initial
+        begin
+            #(`cycle);
+            IN_A = 4'b0001;
+            IN_B = 4'b0010;
+            IN_SW = 4'b0100;
+            #(`cycle);
+                SEL_A = 1'b0;
+                SEL_B = 1'b0;
+            #(`cycle);
+                SEL_A = 1'b1;
+                SEL_B = 1'b0;
+            #(`cycle);
+                SEL_A = 1'b0;
+                SEL_B = 1'b1;
+            #(`cycle);
+                SEL_A = 1'b1;
+                SEL_B = 1'b1;
+
+            #`max_cycle_count;
+            $stop;
+        end
+endmodule
     
