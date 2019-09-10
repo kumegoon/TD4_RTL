@@ -8,8 +8,78 @@
 module full_adder_tb;
 
 //wire and reg
+    reg             I_CLK;
+    reg             RST;
     reg [1:0]       IN_Y;
     reg [1:0]       IN_DATA;
     reg [1:0]       CIN;
-    reg [1:0]       IN_Y;
-    reg [1:0]       IN_Y;
+    wire [1:0]       CRR;
+    wire [1:0]       DATA;
+
+// Design set
+
+    FULL_ADDER FULL_ADDER(
+        .CLK(I_CLK),
+        .RST(RST),
+        .LOAD(LOAD),
+        .IN_Y(IN_Y),
+        .IN_DATA(IN_DATA),
+        .CIN(CIN),
+        .CRR(CRR),
+        .DATA(DATA)
+    );
+
+// cycle set
+    event       cycle_event;
+    integer     cycle_count;
+
+    initial
+        begin
+            -> cycle_event;
+            #1;
+            cycle_count = 0; 
+        end
+
+    always
+        begin
+            #(`cycle)
+            -> cycle_event;
+        end
+    
+    always
+        begin
+            #(`cycle/2);
+            I_CLK = 0;
+            #(`cycle/2);
+            I_CLK = 1;
+        end
+    
+    always @(cycle_event)
+        begin 
+            if (cycle_count % 1000 ==0) begin
+                $display ("%d cycle", cycle_count);
+            end
+        end
+
+//test
+
+    initial
+        begin
+            #(`cycle);
+            IN_Y = 2'b00;
+            IN_DATA = 2'b00;
+            CIN = 2'b00;
+            #(`cycle);
+            IN_Y = 2'b01;
+            #(`cycle);
+            IN_DATA = 2'b01;
+            #(`cycle);
+            CIN = 2'b01;
+            #(`cycle);
+            IN_DATA = 2'b00;
+            #(`cycle);
+            IN_Y = 2'b00;
+        end
+endmodule
+
+
