@@ -1,6 +1,6 @@
 `define cycle               1000
 `define cycle_duty          `cycle/2
-`define max_cycle_count     150000
+`define max_cycle_count     10000
 `timescale                  1ns/1ns
 
 // module declare
@@ -8,20 +8,15 @@
 module full_adder_tb;
 
 //wire and reg
-    reg             I_CLK;
-    reg             RST;
     reg [1:0]       IN_Y;
     reg [1:0]       IN_DATA;
     reg [1:0]       CIN;
-    wire [1:0]       CRR;
-    wire [1:0]       DATA;
+    wire [1:0]      CRR;
+    wire            DATA;
 
 // Design set
 
     FULL_ADDER FULL_ADDER(
-        .CLK(I_CLK),
-        .RST(RST),
-        .LOAD(LOAD),
         .IN_Y(IN_Y),
         .IN_DATA(IN_DATA),
         .CIN(CIN),
@@ -46,19 +41,13 @@ module full_adder_tb;
             -> cycle_event;
         end
     
-    always
-        begin
-            #(`cycle/2);
-            I_CLK = 0;
-            #(`cycle/2);
-            I_CLK = 1;
-        end
-    
+
     always @(cycle_event)
         begin 
-            if (cycle_count % 1000 ==0) begin
-                $display ("%d cycle", cycle_count);
-            end
+            cycle_count <= cycle_count + 1;
+                if (cycle_count % 1000 ==0) begin
+                    $display ("%d cycle", cycle_count);
+                end
         end
 
 //test
@@ -79,6 +68,9 @@ module full_adder_tb;
             IN_DATA = 2'b00;
             #(`cycle);
             IN_Y = 2'b00;
+
+            #`max_cycle_count;
+            $stop;
         end
 endmodule
 

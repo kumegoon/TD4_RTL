@@ -3,12 +3,12 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-entity full_adder id
+entity full_adder is
     Port(
             IN_Y        : in STD_LOGIC_VECTOR(1 downto 0);
             IN_DATA     : in STD_LOGIC_VECTOR(1 downto 0);
             CIN         : in STD_LOGIC_VECTOR(1 downto 0);
-            CRR         : out STD_LOCIC_VECTOR(1 downto 0);
+            CRR         : out STD_LOGIC_VECTOR(1 downto 0);
             DATA        : out STD_LOGIC
     );
 end full_adder;
