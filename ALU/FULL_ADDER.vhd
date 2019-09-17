@@ -16,25 +16,24 @@ end full_adder;
 architecture RTL of full_adder is
     signal  q        : STD_LOGIC_VECTOR(1 downto 0);
     begin
-        process (q, IN_Y, IN_DATA, CIN) begin
+        process (q, IN_Y, IN_DATA, CIN)
+            begin
 
-            q <= IN_Y + IN_DATA + CIN;
+                q <= IN_Y + IN_DATA + CIN;
 
-            if (q = 3) then
-                DATA    <= '1';
-                CRR     <= "01";
-            elsif (q = 2) then
-                DATA    <= '0';
-                CRR     <= "01";
-            elsif (q = 1) then
-                DATA    <= '1';
-                CRR     <= "00";
-            else
-                DATA    <= '0';
-                CRR     <= "00";
-            end if;
-
+                if (q = 3) then
+                    DATA    <= '1';
+                    CRR     <= "01";
+                elsif (q = 2) then
+                    DATA    <= '0';
+                    CRR     <= "01";
+                elsif (q = 1) then
+                    DATA    <= '1';
+                    CRR     <= "00";
+                else
+                    DATA    <= '0';
+                    CRR     <= "00";
+                end if;
         end process;
-
 end RTL;
 
