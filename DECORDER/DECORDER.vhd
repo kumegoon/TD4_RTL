@@ -10,7 +10,7 @@ entity DECORDER is
         SEL_A       :   out std_logic;
         SEL_B       :   out std_logic
     );
-end DECORDER
+end DECORDER;
 
 architecture RTL of DECORDER is
 
@@ -22,3 +22,62 @@ architecture RTL of DECORDER is
 
         -- OP_CODE(OP3, OP2, OP1, OP0)
         -- selecter(B,A) LOAD(LOAD3, LOAD2, LOAD1, LOAD0)
+
+    process (OP_CODE, C_FLAG) begin
+        if (OP_CODE = "1110") then
+            if (C_FLAG = '0') then
+                --JNC(C=0)
+                selecter    <= "11";
+                LOAD        <= "0111";
+            elsif (C_FLAG = '1')  then
+                --JNC(C=1)
+                selecter    <= "11";
+                LOAD        <= "1111";
+            else
+                selecter    <=  "11";
+                LOAD        <=  "1111";
+            end if;
+        else
+            case OP_CODE is
+                --ADD A, Im
+                when "0000" =>  selecter    <= "00";
+                                LOAD        <= "1110";
+                --MOV A, B
+                when "0001" =>  selecter    <= "01";
+                                LOAD        <= "1110";
+                -- IN A
+                when "0010" =>  selecter    <= "10";
+                                LOAD        <= "1110";
+                --MOV A, Im
+                when "0011" =>  selecter    <= "11";
+                                LOAD        <= "1110";
+                --MOV B, A
+                when "0100" =>  selecter    <= "00";
+                                LOAD        <= "1101";
+                --ADD B, Im
+                when "0101" =>  selecter    <= "01";
+                                LOAD        <= "1101";
+                --IN B
+                when "0110" =>  selecter    <= "10";
+                                LOAD        <= "1101";
+                --MOV B, Im
+                when "0111" =>  selecter    <= "11";
+                                LOAD        <= "1101";
+                --OUT B
+                when "1001" =>  selecter    <= "01";
+                                LOAD        <= "1011";
+                --OUT Im
+                when "1011" =>  selecter    <= "11";
+                                LOAD        <= "1011";
+                --JMP
+                when "1111" =>  selecter    <= "11";
+                                LOAD        <= "1111";
+
+                when others =>  selecter    <= "11";
+                                LOAD        <= "1111";
+                    
+            end case;
+        end if;
+    end process;
+
+end RTL;
